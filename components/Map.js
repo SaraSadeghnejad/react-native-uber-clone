@@ -8,6 +8,7 @@ import MapViewDirections from 'react-native-maps-directions'
 import { GOOGLE_MAPS_APIKEY } from "@env";
 import { useRef } from 'react'
 const Map = () => {
+    const dispatch = useRef(MapViewDirections)
     const origin = useSelector(selectOrigin);
     const destination = useSelector(selectDestination);
     const mapRef=useRef(null);
@@ -17,7 +18,17 @@ const Map = () => {
         edgePadding:{top:50,right:50,bottom:50,left:50}
       });
     }, [origin,destination])
-    
+    useEffect(() => {
+        if(!origin || !destination)return;
+    const getTravelTime= async() =>{
+     fetch()
+     .then(res=>res.json())
+     .then((data) => {
+      dispatch(setTravelTimeInformation(data.rows[0].elements[0]))
+     })
+    }
+    getTravelTime();
+      }, [origin,destination, GOOGLE_MAPS_APIKEY ])
   return (
     <MapView
     ref={mapRef}
